@@ -7,11 +7,14 @@ public class Product {
     private final String name;
     private final BigDecimal pricePerUnit;
     private final int quantity;
+    private final Category category;
 
-    public Product(String name, BigDecimal pricePerUnit, int quantity) {
+
+    public Product(String name, BigDecimal pricePerUnit, int quantity, Category category) {
         this.name = name;
         this.pricePerUnit = pricePerUnit;
         this.quantity = quantity;
+        this.category = category;
 
         validateName(name);
         validatePricePerUnit(pricePerUnit);
@@ -28,6 +31,10 @@ public class Product {
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     private void validateName(String name) {
@@ -49,5 +56,10 @@ public class Product {
         if (quantity <= 0) {
             throw new IllegalArgumentException("quantity should be greater then 0; received quantity=" + quantity);
         }
+    }
+
+    public enum Category {
+        DRINKS,
+        FOOD
     }
 }

@@ -16,8 +16,8 @@ public class ShoppingCartServiceTest {
     @Test
     public void calculatesPrice() {
         ShoppingCart cart = new ShoppingCart(Arrays.asList(
-                new Product("Tea", BigDecimal.valueOf(5.0), 2),
-                new Product("Coffee", BigDecimal.valueOf(6.5), 1)
+                new Product("Tea", BigDecimal.valueOf(5.0), 2, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(6.5), 1, Product.Category.DRINKS)
         ));
 
         BigDecimal actual = service.calculateTotalPrice(cart);
@@ -29,8 +29,8 @@ public class ShoppingCartServiceTest {
     @Test
     void calculateTotalPrice_TeaAndCoffee_Total12() {
         ShoppingCart cart = new ShoppingCart(List.of(
-                new Product("Tea", BigDecimal.valueOf(5.0), 1),
-                new Product("Coffee", BigDecimal.valueOf(3.5), 2)
+                new Product("Tea", BigDecimal.valueOf(5.0), 1, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(3.5), 2, Product.Category.DRINKS)
         ));
 
         BigDecimal result = service.calculateTotalPrice(cart);
@@ -41,9 +41,9 @@ public class ShoppingCartServiceTest {
     @Test
     void calculateTotalPrice_2TeaAndCoffee_Total12() {
         ShoppingCart cart = new ShoppingCart(List.of(
-                new Product("Tea", BigDecimal.valueOf(5.0), 1),
-                new Product("Tea", BigDecimal.valueOf(5.0), 1),
-                new Product("Coffee", BigDecimal.valueOf(3.5), 2)
+                new Product("Tea", BigDecimal.valueOf(5.0), 1, Product.Category.DRINKS),
+                new Product("Tea", BigDecimal.valueOf(5.0), 1, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(3.5), 2, Product.Category.DRINKS)
         ));
 
         BigDecimal result = service.calculateTotalPrice(cart);
@@ -54,8 +54,8 @@ public class ShoppingCartServiceTest {
     @Test
     void calculateTotalPrice_TeaAndCoffee_Total11_3() {
         ShoppingCart cart = new ShoppingCart(List.of(
-                new Product("Tea", BigDecimal.valueOf(5.123456789), 1),
-                new Product("Coffee", BigDecimal.valueOf(3.123456789), 2)
+                new Product("Tea", BigDecimal.valueOf(5.123456789), 1, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(3.123456789), 2, Product.Category.DRINKS)
         ));
 
         BigDecimal result = service.calculateTotalPrice(cart);
@@ -66,12 +66,24 @@ public class ShoppingCartServiceTest {
     @Test
     void calculateTotalPrice_5TeaAnd4Coffee_Total23_4() {
         ShoppingCart cart = new ShoppingCart(List.of(
-                new Product("Tea", BigDecimal.valueOf(5.0), 5),
-                new Product("Coffee", BigDecimal.valueOf(3.5), 3)
+                new Product("Tea", BigDecimal.valueOf(5.0), 5, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(3.5), 3, Product.Category.DRINKS)
         ));
 
         BigDecimal result = service.calculateTotalPrice(cart);
         Assertions.assertEquals(BigDecimal.valueOf(33.0), result);
+    }
+
+    @Test
+    void calculateTotalPrice_DiscountByCategory_Total31_84() {
+        ShoppingCart cart = new ShoppingCart(List.of(
+                new Product("Tea", BigDecimal.valueOf(5.3), 2, Product.Category.DRINKS),
+                new Product("Coffee", BigDecimal.valueOf(3.5), 2, Product.Category.DRINKS),
+                new Product("Cheese", BigDecimal.valueOf(8), 2, Product.Category.FOOD)
+        ));
+
+        BigDecimal result = service.calculateTotalPrice(cart);
+        Assertions.assertEquals(BigDecimal.valueOf(31.84), result);
     }
 
 }

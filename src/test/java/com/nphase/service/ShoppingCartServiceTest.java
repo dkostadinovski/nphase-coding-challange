@@ -63,4 +63,15 @@ public class ShoppingCartServiceTest {
         Assertions.assertEquals(BigDecimal.valueOf(11.3), result);
     }
 
+    @Test
+    void calculateTotalPrice_5TeaAnd4Coffee_Total23_4() {
+        ShoppingCart cart = new ShoppingCart(List.of(
+                new Product("Tea", BigDecimal.valueOf(5.0), 5),
+                new Product("Coffee", BigDecimal.valueOf(3.5), 3)
+        ));
+
+        BigDecimal result = service.calculateTotalPrice(cart);
+        Assertions.assertEquals(BigDecimal.valueOf(33.0), result);
+    }
+
 }
